@@ -1,0 +1,331 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: rgb(10, 25, 47);
+    padding-top: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container {
+    max-width: 85%;
+    margin: auto;
+    padding: 10px;
+}
+
+@media screen and (min-width: 1200px) {
+    .container {
+        max-width: 1000px;
+    }
+}
+
+@media screen and (min-width: 1500px) {
+    .container {
+        max-width: 1250px;
+    }
+}
+
+@media screen and (min-width: 1900px) {
+    .container {
+        max-width: 1700px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .container {
+        max-width: 95%;
+        padding: 8px;
+    }
+}
+
+.poke-header {
+    background: rgb(217, 76, 231);
+    background: rgb(53, 134, 128);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-height: 70px;
+    z-index: 100;
+}
+
+.poke-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+    padding: 1.5em 0;
+    max-width: 100%;
+}
+
+@media screen and (max-width: 1000px) {
+    .poke-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .poke-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .poke-list {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+
+/* Card */
+
+.poke-card {
+    max-width: 250px;
+    width: 100%;
+    height: 286px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+    transition: all ease-in-out .35s;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    overflow: hidden;
+    margin: 0 auto;
+    /* top: 50%;
+    left: 50%; */
+    transform: scale(1) translate(0);
+}
+
+.poke-card.active {
+    position: fixed;
+    top: calc(50% - 190px) !important;
+    left: calc(50% - 195px)!important;
+    transform: scale(1) translate(calc(-50% + 190px), calc(-50% + 195px));
+    width: 380px;
+    height: 390px;
+    background: rgb(10, 25, 47);
+    border: 1px solid rgb(53, 134, 128);
+    z-index: 20;
+    animation: activeCard ease-in-out .8s;
+}
+
+@keyframes activeCard {
+    0% {
+        transform: scale(1) translate(0%, 0%);
+    }
+    100% {
+        transform: scale(1) translate(calc(-50% + 190px), calc(-50% + 195px));
+    }
+}
+
+.poke-card.active:hover {
+    margin-top: 0px;
+}
+
+@media screen and (max-width: 520px) {
+    .poke-card {
+        height: 310px;
+    }
+}
+
+.poke-card:hover {
+    margin-top: -5px;
+    border: 1px solid rgb(53, 134, 128);
+}
+
+.poke-card .poke-image {
+    overflow: hidden;
+    flex: 2;
+    display: flex;
+    padding: 1em;
+}
+
+.poke-card .poke-image img {
+    max-height: 100%;
+    max-width: 100%;
+    margin: auto;
+}
+
+.poke-card .poke-description {
+    flex: 1;
+    padding: .25em 1em;
+}
+
+.poke-card .poke-description .poke-number {
+    color: #919191;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.poke-card .poke-description .poke-name {
+    color: rgb(53, 134, 128);
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 35px;
+}
+
+.poke-card .poke-description .poke-abilities {
+    display: flex;
+}
+
+.poke-card .poke-description .poke-abilities li {
+    list-style: none;
+    margin-right: 3px;
+    padding: .18em 1em;
+    font-size: 13px;
+    border-radius: 5px;
+    border: 1px solid rgb(53, 134, 128);
+    color: rgba(255, 255, 255, .85);
+}
+
+
+/* Pagination */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+}
+
+.pagination .buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination .prev,
+.pagination .next {
+    margin-left: .3em;
+}
+
+.pagination button {
+    padding: .8em;
+    border: 1px solid rgb(53, 134, 128);
+    background: transparent;
+    color: rgb(53, 134, 128);
+    cursor: pointer;
+    transition: all ease-in-out .25s;
+    outline: none;
+}
+
+.pagination button:disabled {
+    cursor: text;
+}
+
+.pagination button:disabled:hover {
+    background: transparent;
+}
+
+.pagination button:hover {
+    background: rgb(19, 48, 64);
+}
+
+.pagination small {
+    color: rgb(53, 134, 128);
+    margin-top: 5px;
+    margin-left: .3em;
+    font-size: 11px;
+}
+
+
+/* Overlay Loader */
+
+.overlay,
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(19, 48, 64, .875);
+    transition: all ease-in-out .25s;
+    visibility: hidden;
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay.active,
+.loader.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.bounce {
+    animation: bounce ease-in-out 1000ms infinite;
+}
+
+
+/* Pokeball */
+
+.pokeball {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    border: solid 2px black;
+    position: relative;
+    background: linear-gradient(to bottom, #eee 0%, #fff 100%);
+    margin: 10px auto;
+}
+
+.pokeball:before,
+.pokeball:after {
+    content: "";
+    display: block;
+}
+
+.pokeball,
+.pokeball:before,
+.pokeball:after {
+    transition: all 600ms cubic-bezier(0.67, 0.4, 0.36, 0.75);
+}
+
+.pokeball:before {
+    width: 100%;
+    height: 25px;
+    border-bottom: solid 2px black;
+    border-radius: 25px 25px 0 0;
+    background: linear-gradient(to bottom, #d10000 0%, #f00 50%) !important;
+}
+
+.pokeball:after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: linear-gradient(to bottom, #fff 0%, #ccc 100%);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px black, 0 0 0 2px #ddd, 0 0 0 3.5714285714px black, 0 0 5px 2.9411764706px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(20px);
+    }
+    30% {
+        transform: translateY(8px);
+    }
+    70% {
+        transform: translateY(7px);
+    }
+    80% {
+        transform: translateY(2px);
+    }
+    90% {
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(20px);
+    }
+}
