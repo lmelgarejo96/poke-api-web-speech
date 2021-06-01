@@ -164,17 +164,18 @@ let voices = [];
 
 function readText(text){
 
-    if (typeof speechSynthesis === 'undefined') {
+   /*  if (typeof speechSynthesis === 'undefined') {
         return console.log("Su navegador no soporta speech simphony!")
     }
 
     const voice = voices.find(v => v.lang === "es-MX"); // find spanish voice
 
     if(!voice) return console.log("No se encontraron voces para leer!")
-
-    const reader = new SpeechSynthesisUtterance(text);
+ */
+    speak(text)
+    /* const reader = new SpeechSynthesisUtterance(text);
     reader.voice = voice
-    speechSynthesis.speak(reader);
+    speechSynthesis.speak(reader); */
 
 }
 
@@ -261,6 +262,17 @@ loadVoicesWhenAvailable(function () {
  console.log("loaded") 
 })
 
-function speak () {
-  setTimeout(() => playByText("en-US", "Hello, world"), 300)
+function isMobile() {
+    return (
+        (navigator.userAgent.match(/Android/i)) ||
+        (navigator.userAgent.match(/webOS/i)) ||
+        (navigator.userAgent.match(/iPhone/i)) ||
+        (navigator.userAgent.match(/iPod/i)) ||
+        (navigator.userAgent.match(/iPad/i)) ||
+        (navigator.userAgent.match(/BlackBerry/i))
+    );
+}
+
+function speak (text) {
+  setTimeout(() => playByText(isMobile() ? "es-ES": "es-MX", text), 200)
 }
