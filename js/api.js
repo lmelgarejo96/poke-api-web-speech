@@ -1,3 +1,4 @@
+// variables & constants
 const limit = 12;
 let offset = 0;
 
@@ -49,14 +50,10 @@ async function renderPokemons(data) {
         return getPokemon(pokemon.url)
     });
 
-    const res = await Promise.all(promises);
+    const pokemons = await Promise.all(promises);
 
-    const pokemons = await Promise.all(res.map(async(p) => {
-        return await getHTMLPokemon(p);
-    }))
-
-    pokemons.forEach(p => {
-        container.innerHTML += p;
+    pokemons.forEach((p) => {
+        container.innerHTML += getHTMLPokemon(p);
     })
 
     loader.classList.remove("active");
@@ -65,11 +62,9 @@ async function renderPokemons(data) {
 }
 
 async function getPokemon(link) {
-    const res = await fetch(link)
-    return res.json();
-}
 
-async function getHTMLPokemon(data) {
+    const res = await fetch(link);
+    const data = await res.json();
 
     const typesPromise = data.types.map((t) => { // obtain types list by lang
         return getTypeNameByLanguage(t.type.url, "es");
@@ -83,19 +78,27 @@ async function getHTMLPokemon(data) {
 
     const abilities = await Promise.all(abilitiesPromise);
 
-    const pokemon = new Pokemon({
-        id: data.id,
-        name: data.name,
+    return {
+        base: {...data},
         abilities,
-        image: data.sprites.other.dream_world.front_default,
-        moves: data.moves,
+        types
+    }
+}
+
+function getHTMLPokemon({base, abilities, types}) {
+    const pokemon = new Pokemon({
+        id: base.id,
+        name: base.name,
+        abilities,
+        image: base.sprites.other.dream_world.front_default,
+        moves: base.moves,
         types,
-        hp: data.stats[0].base_stat,
-        atack: data.stats[1].base_stat,
-        defense: data.stats[2].base_stat,
-        specialAtack: data.stats[3].base_stat,
-        specialDeffense: data.stats[4].base_stat,
-        speed: data.stats[5].base_stat,
+        hp: base.stats[0].base_stat,
+        atack: base.stats[1].base_stat,
+        defense: base.stats[2].base_stat,
+        specialAtack: base.stats[3].base_stat,
+        specialDeffense: base.stats[4].base_stat,
+        speed: base.stats[5].base_stat,
     })
 
     return pokemon.getPokemonCardTemplate()
@@ -177,6 +180,9 @@ function readText(text){
 
 function loadVoices() {
     voices  = speechSynthesis.getVoices();
+    voices.forEach(v => {
+        document.getElementById("voices").innerHTML += `<option value="${v.lang}">${v.lang}</option>`
+    })
 }
 
 if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {

@@ -23,7 +23,7 @@ class Pokemon {
             </div>
             <div class="poke-description">
                 <div class="poke-number">
-                    N.° ${this.getConvertId()}
+                    N.° ${this.getIdConverted()}
                 </div>
                 <h3 class="poke-name">${this.capitalize(this.name)}</h3>
                 <ul class="poke-abilities">
@@ -38,7 +38,7 @@ class Pokemon {
         `
     }
 
-    getConvertId(){
+    getIdConverted(){
         const arr = this.id.toString().split("")
         let cod="";
         for(let i = 0; i < 4-arr.length; i++) {
